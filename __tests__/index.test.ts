@@ -114,4 +114,28 @@ describe("with a pre-populated streak", () => {
 
     expect(streakUpdate.currentCount).toBe(1);
   })
+
+  it("should save the reset streak to localStorage", () => {
+    const key = "streak";
+    const date = new Date("12/13/2021");
+    streakCounter(mockLocalStorage, date);
+
+    // break the streak
+    const dateUpdated = new Date("12/15/2021");
+    const streakUpdated = streakCounter(mockLocalStorage, dateUpdated);
+
+    const streakAsString = mockLocalStorage.getItem(key);
+    const streak = JSON.parse(streakAsString || "");
+
+    expect(streak.currentCount).toBe(1);
+  });
+
+  it("should not reset the streak for same-day login", () => {
+    const date = new Date("12/13/2021");
+    streakCounter(mockLocalStorage, date);
+
+    const streakUpdated = streakCounter(mockLocalStorage, date);
+
+    expect(streakUpdated.currentCount).toBe(2);
+  });
 });
