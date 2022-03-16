@@ -1,0 +1,4 @@
+__tests__
+jest.config.cjs
+.github
+.vscode
